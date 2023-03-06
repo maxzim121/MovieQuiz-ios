@@ -18,35 +18,21 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Ff6-Jj-Ffx">
-                                <rect key="frame" x="20" y="69" width="390" height="808"/>
+                                <rect key="frame" x="20" y="69" width="390" height="809.33333333333337"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eBr-c9-N2n">
                                         <rect key="frame" x="0.0" y="0.0" width="390" height="23.333333333333332"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9iq-tF-WWc" userLabel="Question Title Label">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Вопрос:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9iq-tF-WWc" userLabel="Question Title Label">
                                                 <rect key="frame" x="0.0" y="0.0" width="349.66666666666669" height="23.333333333333332"/>
-                                                <attributedString key="attributedText">
-                                                    <fragment content="Вопрос:">
-                                                        <attributes>
-                                                            <color key="NSColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="20" name="YSDisplay-Medium"/>
-                                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                                        </attributes>
-                                                    </fragment>
-                                                </attributedString>
+                                                <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
+                                                <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Zf-PV-T6u" userLabel="Index Label">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="1/10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Zf-PV-T6u" userLabel="Index Label">
                                                 <rect key="frame" x="349.66666666666669" y="0.0" width="40.333333333333314" height="23.333333333333332"/>
-                                                <attributedString key="attributedText">
-                                                    <fragment content="1/10">
-                                                        <attributes>
-                                                            <color key="NSColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="20" name="YSDisplay-Medium"/>
-                                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                                        </attributes>
-                                                    </fragment>
-                                                </attributedString>
+                                                <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
+                                                <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
@@ -70,19 +56,12 @@
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dmk-qp-fm8">
-                                        <rect key="frame" x="0.0" y="648.33333333333337" width="390" height="79.666666666666629"/>
+                                        <rect key="frame" x="0.0" y="648.33333333333337" width="390" height="81"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sP3-mM-KxF" userLabel="Question Label">
-                                                <rect key="frame" x="42" y="12.999999999999996" width="328" height="53.666666666666657"/>
-                                                <attributedString key="attributedText">
-                                                    <fragment content="Рейтинг этого фильма меньше чем 5?">
-                                                        <attributes>
-                                                            <color key="NSColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="23" name="YSDisplay-Bold"/>
-                                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                                        </attributes>
-                                                    </fragment>
-                                                </attributedString>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sP3-mM-KxF" userLabel="Question Label">
+                                                <rect key="frame" x="42" y="13" width="306" height="55"/>
+                                                <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
+                                                <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
@@ -91,11 +70,11 @@
                                             <constraint firstItem="sP3-mM-KxF" firstAttribute="top" secondItem="Dmk-qp-fm8" secondAttribute="top" constant="13" id="8hZ-Su-vlk"/>
                                             <constraint firstItem="sP3-mM-KxF" firstAttribute="leading" secondItem="Dmk-qp-fm8" secondAttribute="leading" constant="42" id="Zn8-9c-4vF"/>
                                             <constraint firstAttribute="bottom" secondItem="sP3-mM-KxF" secondAttribute="bottom" constant="13" id="bid-uU-kEm"/>
-                                            <constraint firstAttribute="trailing" secondItem="sP3-mM-KxF" secondAttribute="trailing" constant="20" symbolic="YES" id="feU-hH-I1R"/>
+                                            <constraint firstAttribute="trailing" secondItem="sP3-mM-KxF" secondAttribute="trailing" constant="42" id="feU-hH-I1R"/>
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="mrE-7h-hIs">
-                                        <rect key="frame" x="0.0" y="748" width="390" height="60"/>
+                                        <rect key="frame" x="0.0" y="749.33333333333337" width="390" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FvK-IC-Qqj" userLabel="No Button">
                                                 <rect key="frame" x="0.0" y="0.0" width="185" height="60"/>

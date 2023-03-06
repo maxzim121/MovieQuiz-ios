@@ -133,6 +133,7 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
+        
         return QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(),
                                  question: model.text,
                                  questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
@@ -140,6 +141,7 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func showAnswerResult(isCorrect: Bool) {
+        
         imageView.layer.masksToBounds = true
         if isCorrect == true {
             imageView.layer.borderWidth = 8
@@ -148,9 +150,11 @@ final class MovieQuizViewController: UIViewController {
             imageView.layer.borderWidth = 8
             imageView.layer.borderColor = UIColor.ypRed.cgColor
         }
-        }
+        
+    }
     
     private func showNextQuestionOrResults() {
+        
         if currentQuestionIndex == questions.count - 1 {
             show(quiz: QuizResultsViewModel(
                 title: "Этот раунд окончен!",
@@ -160,7 +164,8 @@ final class MovieQuizViewController: UIViewController {
             currentQuestionIndex += 1
             print(currentQuestionIndex)
             show(quiz: convert(model: questions[currentQuestionIndex]))
-        }
+            
+            }
         }
     
     }
