@@ -63,9 +63,13 @@ final class MovieQuizViewController: UIViewController {
                     correctAnswer: false)
     ]
     
-
+    @IBOutlet weak var yesButton: UIButton!
+    
+    @IBOutlet weak var noButton: UIButton!
+    
     @IBAction private func noButtonTapped(_ sender: UIButton) {
-
+        
+        disabelButtons()
         if questions[currentQuestionIndex].correctAnswer == false {
             showAnswerResult(isCorrect: true)
             correctAnswersCount += 1
@@ -73,6 +77,7 @@ final class MovieQuizViewController: UIViewController {
             showAnswerResult(isCorrect: false)
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.enableButtons()
             self.imageView.layer.borderWidth = 0
             self.showNextQuestionOrResults()
         }
@@ -80,7 +85,8 @@ final class MovieQuizViewController: UIViewController {
     }
     
     @IBAction private func yesButtonTapped(_ sender: UIButton) {
-
+        
+        disabelButtons()
         if questions[currentQuestionIndex].correctAnswer == true {
             showAnswerResult(isCorrect: true)
             correctAnswersCount += 1
@@ -88,6 +94,7 @@ final class MovieQuizViewController: UIViewController {
             showAnswerResult(isCorrect: false)
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.enableButtons()
             self.imageView.layer.borderWidth = 0
             self.showNextQuestionOrResults()
         }
@@ -168,7 +175,18 @@ final class MovieQuizViewController: UIViewController {
             }
         }
     
+    private func disabelButtons() {
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
     }
+    
+    private func enableButtons() {
+        yesButton.isEnabled = true
+        noButton.isEnabled = true
+    }
+    
+    }
+
 
 /*
  Mock-данные
