@@ -52,7 +52,7 @@ class QuestionFactory: QuestionFactoryProtocol {
                     correctAnswer: false)
     ]
     
-    weak var delegate: QuestionFactoryDelegate?
+    private weak var delegate: QuestionFactoryDelegate?
     
     init(delegate: QuestionFactoryDelegate) {
         self.delegate = delegate

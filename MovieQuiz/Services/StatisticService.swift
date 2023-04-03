@@ -8,10 +8,10 @@
 import Foundation
 
 protocol StatisticService {
-    func store(correct: Int, total: Int)
     var totalAccuracy: Double { get }
     var gamesCount: Int { get }
     var bestGame: BestGame? { get }
+    func store(correct: Int, total: Int)
 }
 
 final class StatisticServiceImplementation {

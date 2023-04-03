@@ -10,7 +10,7 @@ import UIKit
 
 final class AlertPresenter {
     
-    weak var viewController: UIViewController?
+    private weak var viewController: UIViewController?
     
     init(viewController: UIViewController) {
         self.viewController = viewController
