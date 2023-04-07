@@ -1,84 +1,6 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
-/*
-    private struct MovieInfo: Codable {
-        let id: String
-        let rank: Int
-        let title: String
-        let fullTitle: String
-        let year: Int
-        let crew: String
-        let imDbRating: Double
-        let imDbRatingCount: Int
-        
-        enum CodingKeys: CodingKey {
-            case id, rank, title, fullTitle, year, crew, imDbRating, imDbRatingCount
-        }
-        
-        enum ParseError: Error {
-            case rankFailure
-            case yearFailure
-            case imDbRatingFailure
-            case imDbRatingCountFailure
-        }
-        
-        init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-            
-            id = try container.decode(String.self, forKey: .id)
-            
-            let rank = try container.decode(String.self, forKey: .rank)
-            guard let rankValue = Int(rank) else {
-                throw ParseError.rankFailure
-            }
-            self.rank = rankValue
-            
-            title = try container.decode(String.self, forKey: .title)
-            fullTitle = try container.decode(String.self, forKey: .fullTitle)
-            
-            let year = try container.decode(String.self, forKey: .year)
-            guard let yearValue = Int(year) else {
-                throw ParseError.yearFailure
-            }
-            self.year = yearValue
-            
-            crew = try container.decode(String.self, forKey: .crew)
-            
-            let imDbRating = try container.decode(String.self, forKey: .imDbRating)
-            guard let imDbRatingValue = Double(imDbRating) else {
-                throw ParseError.imDbRatingFailure
-            }
-            self.imDbRating = imDbRatingValue
-            
-            let imDbRatingCount = try container.decode(String.self, forKey: .imDbRatingCount)
-            guard let imDbRatingCountValue = Int(imDbRatingCount) else {
-                throw ParseError.imDbRatingCountFailure
-            }
-            self.imDbRatingCount = imDbRatingCountValue
-        }
-    }
-    
-    private struct Movies: Decodable {
-        let items: [MovieInfo]
-        
-        enum CodingKeys: CodingKey {
-            case items
-        }
-        
-        enum ParseError: Error {
-            case yearFailure
-            case runtimeMinsFailure
-        }
-        
-        init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-            items = try container.decode([MovieInfo].self, forKey: .items)
-        }
-        
-    }
-*/
-    
     
     private var questionFactory: QuestionFactoryProtocol?
     private var alertPresenter: AlertPresenterProtocol?
@@ -102,9 +24,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             showAnswerResult(isCorrect: false)
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.showNextQuestionOrResults()
             self.enableButtons()
             self.imageView.layer.borderWidth = 0
-            self.showNextQuestionOrResults()
         }
     }
     
@@ -118,39 +40,29 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             showAnswerResult(isCorrect: false)
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.showNextQuestionOrResults()
             self.enableButtons()
             self.imageView.layer.borderWidth = 0
-            self.showNextQuestionOrResults()
         }
     }
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet private weak var questionLabel: UILabel!
     @IBOutlet private weak var indexLabel: UILabel!
     @IBOutlet private weak var imageView: UIImageView!
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
-/*
-        var documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let fileName = "top250MoviesIMDB.json"
-        documentsURL.appendPathComponent(fileName)
-        let jsonString = try? String(contentsOf: documentsURL)
-        let data = jsonString!.data(using: .utf8)!
-        do {
-            let movies = try JSONDecoder().decode(Movies.self, from: data)
-            print(movies)
-        } catch {
-            print("Failed to parse: \(error.localizedDescription)")
-        }
-*/
         
         super.viewDidLoad()
+        questionLabel.text = "Загрузка вопросов...\n"
         
-        questionFactory = QuestionFactory(delegate: self)
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         statisticService = StatisticServiceImplementation()
         alertPresenter = AlertPresenter(viewController: self)
         
-        questionFactory?.requestNextQuestion()
+        showLoadingIndicator()
+        questionFactory?.loadData()
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -166,6 +78,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
+    func didLoadDadaFromServer() {
+        activityIndicator.isHidden = true
+        questionFactory?.requestNextQuestion()
+    }
+    
+    func didFailToLoadDataFromServer(with error: Error) {
+        showNetworkError(message: error.localizedDescription)
+    }
     
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
@@ -191,7 +111,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        return QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(),
+        return QuizStepViewModel(image: UIImage(data: model.image) ?? UIImage(),
                                  question: model.text,
                                  questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
@@ -241,6 +161,28 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func enableButtons() {
         yesButton.isEnabled = true
         noButton.isEnabled = true
+    }
+    
+    // MARK: - Indicator
+    
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+    
+    private func showNetworkError(message: String) {
+        activityIndicator.isHidden = true
+        let networkAlert = AlertModel(
+            title: "Ошибка",
+            message: message,
+            buttonText: "Попробовать ещё раз",
+            completion: { [weak self] in
+                self?.currentQuestionIndex = 0
+                self?.correctAnswersCount = 0
+                self?.questionFactory?.loadData()
+                self?.questionFactory?.requestNextQuestion()}
+        )
+        alertPresenter?.show(alertModel: networkAlert)
     }
     
 }
