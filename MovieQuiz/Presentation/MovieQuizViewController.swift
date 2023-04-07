@@ -24,6 +24,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             showAnswerResult(isCorrect: false)
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.somethingIsLoading()
             self.showNextQuestionOrResults()
             self.enableButtons()
             self.imageView.layer.borderWidth = 0
@@ -40,13 +41,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             showAnswerResult(isCorrect: false)
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.somethingIsLoading()
             self.showNextQuestionOrResults()
             self.enableButtons()
             self.imageView.layer.borderWidth = 0
         }
     }
     
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet private weak var questionLabel: UILabel!
     @IBOutlet private weak var indexLabel: UILabel!
     @IBOutlet private weak var imageView: UIImageView!
@@ -55,7 +57,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        questionLabel.text = "Загрузка вопросов...\n"
+        somethingIsLoading()
         
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         statisticService = StatisticServiceImplementation()
@@ -76,15 +78,20 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
         }
+        hideLoadingIndicator()
     }
     
     func didLoadDadaFromServer() {
-        activityIndicator.isHidden = true
+        hideLoadingIndicator()
         questionFactory?.requestNextQuestion()
     }
     
     func didFailToLoadDataFromServer(with error: Error) {
         showNetworkError(message: error.localizedDescription)
+    }
+    
+    func didFailToLoadImage(with error: Error) {
+        showImageLoadingError(message: error.localizedDescription)
     }
     
     private func show(quiz step: QuizStepViewModel) {
@@ -166,12 +173,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Indicator
     
     private func showLoadingIndicator() {
-        activityIndicator.isHidden = false
         activityIndicator.startAnimating()
     }
     
+    private func hideLoadingIndicator() {
+        activityIndicator.stopAnimating()
+    }
+    
     private func showNetworkError(message: String) {
-        activityIndicator.isHidden = true
+        hideLoadingIndicator()
         let networkAlert = AlertModel(
             title: "Ошибка",
             message: message,
@@ -179,10 +189,30 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             completion: { [weak self] in
                 self?.currentQuestionIndex = 0
                 self?.correctAnswersCount = 0
-                self?.questionFactory?.loadData()
+                self?.questionFactory?.loadData()}
+        )
+        alertPresenter?.show(alertModel: networkAlert)
+    }
+    /**
+     В функции снизу, в completion, оставляю только запрос следующего вопроса, чтобы при ошибке загрузки изображения не слетали предыдущие ответы
+     **/
+    private func showImageLoadingError(message: String) {
+        hideLoadingIndicator()
+        let networkAlert = AlertModel(
+            title: "Ошибка",
+            message: message,
+            buttonText: "Попробовать ещё раз",
+            completion: { [weak self] in
                 self?.questionFactory?.requestNextQuestion()}
         )
         alertPresenter?.show(alertModel: networkAlert)
+    }
+    
+    // MARK: - LoadingScreen
+    private func somethingIsLoading() {
+        imageView.image = nil
+        questionLabel.text = "Загрузка вопроса...\n"
+        showLoadingIndicator()
     }
     
 }

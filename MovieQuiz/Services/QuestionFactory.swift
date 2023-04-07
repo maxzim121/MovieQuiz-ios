@@ -92,6 +92,7 @@ class QuestionFactory: QuestionFactoryProtocol {
                 DispatchQueue.main.async { [weak self] in
                     self?.delegate?.didFailToLoadDataFromServer(with: error)
                     print("Failed to load image")
+                    return 
                 }
             }
             
@@ -102,12 +103,12 @@ class QuestionFactory: QuestionFactoryProtocol {
             let correctAnswer = rating > Float(ratingQuestion)
             
             let question = QuizQuestion(image: imageData, text: text, correctAnswer: correctAnswer)
-            
             DispatchQueue.main.async { [ weak self ] in
                 guard let self = self else {return}
                 self.delegate?.didReceiveNextQuestion(question: question)
             }
         }
+        
         /*
         guard let index = (0..<questions.count).randomElement() else {
             delegate?.didReceiveNextQuestion(question: nil)
