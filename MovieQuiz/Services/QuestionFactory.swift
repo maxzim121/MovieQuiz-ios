@@ -92,8 +92,8 @@ class QuestionFactory: QuestionFactoryProtocol {
                 DispatchQueue.main.async { [weak self] in
                     self?.delegate?.didFailToLoadImage(with: error)
                     print("Failed to load image")
-                    return 
                 }
+                return
             }
             
             let rating = Float(movie.imDbRating) ?? 0
