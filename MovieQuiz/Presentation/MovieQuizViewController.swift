@@ -13,40 +13,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet weak var yesButton: UIButton!
     @IBOutlet weak var noButton: UIButton!
     
-    @IBAction private func noButtonTapped(_ sender: UIButton) {
-        disabelButtons()
-        guard let currentQuestion = currentQuestion else {return}
-        if currentQuestion.correctAnswer == false {
-            showAnswerResult(isCorrect: true)
-            correctAnswersCount += 1
-        } else {
-            showAnswerResult(isCorrect: false)
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.somethingIsLoading()
-            self.showNextQuestionOrResults()
-            self.enableButtons()
-            self.imageView.layer.borderWidth = 0
-        }
-    }
-    
-    @IBAction private func yesButtonTapped(_ sender: UIButton) {
-        disabelButtons()
-        guard let currentQuestion = currentQuestion else {return}
-        if currentQuestion.correctAnswer == true {
-            showAnswerResult(isCorrect: true)
-            correctAnswersCount += 1
-        } else {
-            showAnswerResult(isCorrect: false)
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.somethingIsLoading()
-            self.showNextQuestionOrResults()
-            self.enableButtons()
-            self.imageView.layer.borderWidth = 0
-        }
-    }
-    
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet private weak var questionLabel: UILabel!
     @IBOutlet private weak var indexLabel: UILabel!
@@ -56,6 +22,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        presenter.viewController = self
         somethingIsLoading()
         
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
@@ -64,6 +31,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         showLoadingIndicator()
         questionFactory?.loadData()
+    }
+    
+    //MARK: - Actions
+    
+    @IBAction private func yesButtonTapped(_ sender: UIButton) {
+        presenter.currentQuestion = currentQuestion
+        presenter.yesButtonTapped()
+    }
+    
+    @IBAction private func noButtonTapped(_ sender: UIButton) {
+        presenter.currentQuestion = currentQuestion
+        presenter.noButtonTapped()
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -115,15 +94,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         alertPresenter?.show(alertModel: alertModel)
     }
     
-    private func showAnswerResult(isCorrect: Bool) {
+    func showAnswerResult(isCorrect: Bool) {
+
         imageView.layer.masksToBounds = true
-        if isCorrect == true {
-            imageView.layer.borderWidth = 8
-            imageView.layer.borderColor = UIColor.ypGreen.cgColor
-        } else {
-            imageView.layer.borderWidth = 8
-            imageView.layer.borderColor = UIColor.ypRed.cgColor
+        imageView.layer.borderWidth = 8
+        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.somethingIsLoading()
+            self.showNextQuestionOrResults()
+            self.enableButtons()
+            self.imageView.layer.borderWidth = 0
         }
+        
     }
     
     private func showNextQuestionOrResults() {
@@ -151,12 +133,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // MARK: ButtonsControl
     
-    private func disabelButtons() {
+    func disabelButtons() {
         yesButton.isEnabled = false
         noButton.isEnabled = false
     }
     
-    private func enableButtons() {
+    func enableButtons() {
         yesButton.isEnabled = true
         noButton.isEnabled = true
     }

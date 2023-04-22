@@ -31,4 +31,23 @@ final class MovieQuizPresenter {
                                  questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
     
+    var currentQuestion: QuizQuestion?
+    weak var viewController: MovieQuizViewController?
+    
+    func yesButtonTapped() {
+        viewController?.disabelButtons()
+        guard let currentQuestion = currentQuestion else {return}
+        
+        let givenAnswer = true
+        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+    
+    func noButtonTapped() {
+        viewController?.disabelButtons()
+        guard let currentQuestion = currentQuestion else {return}
+        
+        let givenAnswer = false
+        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+    
 }
