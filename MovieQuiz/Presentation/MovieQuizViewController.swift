@@ -2,14 +2,13 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
+    private let presenter = MovieQuizPresenter()
     private var questionFactory: QuestionFactoryProtocol?
     private var alertPresenter: AlertPresenterProtocol?
     private var statisticService: StatisticService?
     private var currentQuestion: QuizQuestion?
     
-    private let questionsAmount: Int = 10
     private var correctAnswersCount: Int = 0
-    public var currentQuestionIndex: Int = 0
     
     @IBOutlet weak var yesButton: UIButton!
     @IBOutlet weak var noButton: UIButton!
@@ -74,7 +73,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             return
         }
         currentQuestion = question
-        let viewModel = convert(model: question)
+        let viewModel = presenter.convert(model: question)
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
         }
@@ -102,27 +101,19 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     
     private func showFinalResult() {
-        statisticService?.store(correct: correctAnswersCount, total: questionsAmount)
+        statisticService?.store(correct: correctAnswersCount, total: presenter.questionsAmount)
         
         let alertModel = AlertModel(
             title: "Этот раунд окончен!",
             message: "\(makeResultMessage())",
             buttonText: "Cыграть ещё раз",
             completion: { [weak self] in
-                self?.currentQuestionIndex = 0
+                self?.presenter.resetQuestionIndex()
                 self?.correctAnswersCount = 0
                 self?.questionFactory?.requestNextQuestion()}
         )
         alertPresenter?.show(alertModel: alertModel)
     }
-    
-    
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        return QuizStepViewModel(image: UIImage(data: model.image) ?? UIImage(),
-                                 question: model.text,
-                                 questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
-    }
-    
     
     private func showAnswerResult(isCorrect: Bool) {
         imageView.layer.masksToBounds = true
@@ -136,10 +127,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func showNextQuestionOrResults() {
-        if currentQuestionIndex == questionsAmount - 1 {
+        if presenter.isLastQuestion() == true {
             showFinalResult()
         } else {
-            currentQuestionIndex += 1
+            presenter.switchToNextQuestion()
             questionFactory?.requestNextQuestion()
         }
     }
@@ -151,7 +142,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             return ""
         }
         let totalPlaysCountLine = "Колличество сыграных квизов: \(statisticService.gamesCount)"
-        let currentGameResult = "Ваш результат: \(correctAnswersCount)\\\(questionsAmount)"
+        let currentGameResult = "Ваш результат: \(correctAnswersCount)\\\(presenter.questionsAmount)"
         let bestGameInfoLine = "Рекорд: \(bestGame.correct)"
         let averageAccuracyLine = "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
         let resultMessage = [totalPlaysCountLine, currentGameResult, bestGameInfoLine, averageAccuracyLine].joined(separator: "\n")
@@ -187,15 +178,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             message: message,
             buttonText: "Попробовать ещё раз",
             completion: { [weak self] in
-                self?.currentQuestionIndex = 0
+                self?.presenter.resetQuestionIndex()
                 self?.correctAnswersCount = 0
                 self?.questionFactory?.loadData()}
         )
         alertPresenter?.show(alertModel: networkAlert)
     }
-    /**
-     В функции снизу, в completion, оставляю только запрос следующего вопроса, чтобы при ошибке загрузки изображения не слетали предыдущие ответы
-     **/
+
     private func showImageLoadingError(message: String) {
         hideLoadingIndicator()
         let networkAlert = AlertModel(
