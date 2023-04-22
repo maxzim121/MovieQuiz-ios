@@ -13,7 +13,6 @@
 		5A448BFE29CD9298007D51A4 /* AlertPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A448BFD29CD9298007D51A4 /* AlertPresenterProtocol.swift */; };
 		5A448C0229D2F566007D51A4 /* MovieModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A448C0129D2F566007D51A4 /* MovieModel.swift */; };
 		5A73596D29D86295002EB74F /* BestGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A73596C29D86295002EB74F /* BestGame.swift */; };
-		5A7B9CC529E7E0B3005D60F7 /* ArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7B9CC429E7E0B3005D60F7 /* ArrayTests.swift */; };
 		5A7B9CC729E82ED9005D60F7 /* MoviesLoaderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7B9CC629E82ED9005D60F7 /* MoviesLoaderTest.swift */; };
 		5A94AA0929A8E339001A629A /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5A94AA0729A8E339001A629A /* YS Display-Medium.ttf */; };
 		5A94AA0A29A8E339001A629A /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5A94AA0829A8E339001A629A /* YS Display-Bold.ttf */; };
@@ -64,7 +63,6 @@
 		5A448BFD29CD9298007D51A4 /* AlertPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenterProtocol.swift; sourceTree = "<group>"; };
 		5A448C0129D2F566007D51A4 /* MovieModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieModel.swift; sourceTree = "<group>"; };
 		5A73596C29D86295002EB74F /* BestGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BestGame.swift; sourceTree = "<group>"; };
-		5A7B9CC429E7E0B3005D60F7 /* ArrayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayTests.swift; sourceTree = "<group>"; };
 		5A7B9CC629E82ED9005D60F7 /* MoviesLoaderTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesLoaderTest.swift; sourceTree = "<group>"; };
 		5A94AA0729A8E339001A629A /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 		5A94AA0829A8E339001A629A /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
@@ -121,7 +119,6 @@
 		5A14DC8529E51EBB00E0C3AD /* MovieQuizTests */ = {
 			isa = PBXGroup;
 			children = (
-				5A7B9CC429E7E0B3005D60F7 /* ArrayTests.swift */,
 				5A7B9CC629E82ED9005D60F7 /* MoviesLoaderTest.swift */,
 			);
 			path = MovieQuizTests;
@@ -386,7 +383,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5A7B9CC529E7E0B3005D60F7 /* ArrayTests.swift in Sources */,
 				5A7B9CC729E82ED9005D60F7 /* MoviesLoaderTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

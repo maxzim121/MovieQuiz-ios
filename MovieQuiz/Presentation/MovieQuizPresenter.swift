@@ -10,14 +10,20 @@ import UIKit
 
 final class MovieQuizPresenter: QuestionFactoryDelegate {
 
-    var correctAnswersCount: Int = 0
     var questionFactory: QuestionFactoryProtocol?
-    var currentQuestion: QuizQuestion?
-    weak var viewController: MovieQuizViewController?
-    let questionsAmount: Int = 10
+    private var currentQuestion: QuizQuestion?
+    private weak var viewController: MovieQuizViewController?
+    private var statisticService: StatisticService?
+    
+    private var correctAnswersCount: Int = 0
+    private let questionsAmount: Int = 10
     private var currentQuestionIndex: Int = 0
+    
     init(viewController: MovieQuizViewController) {
         self.viewController = viewController
+        
+        statisticService = StatisticServiceImplementation()
+        
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         questionFactory?.loadData()
         viewController.somethingIsLoading()
@@ -50,19 +56,19 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     // MARK: Actions
     
     func yesButtonTapped() {
-        viewController?.disabelButtons()
+        self.disabelButtons()
         guard let currentQuestion = currentQuestion else {return}
         
         let givenAnswer = true
-        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        self.proceedWithAnswer(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
     func noButtonTapped() {
-        viewController?.disabelButtons()
+        self.disabelButtons()
         guard let currentQuestion = currentQuestion else {return}
         
         let givenAnswer = false
-        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        self.proceedWithAnswer(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
     func didAnswer(isCorrectAnswer: Bool) {
@@ -100,13 +106,54 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     
     //MARK: ShowNextQuestionOrResult
     
-    func showNextQuestionOrResults() {
+    func proceedToNextQuestionOrResults() {
         if self.isLastQuestion() == true {
             viewController?.showFinalResult()
         } else {
             self.switchToNextQuestion()
             questionFactory?.requestNextQuestion()
         }
+    }
+    
+    func proceedWithAnswer(isCorrect: Bool) {
+        didAnswer(isCorrectAnswer: isCorrect)
+        viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.viewController?.somethingIsLoading()
+            self.proceedToNextQuestionOrResults()
+            self.enableButtons()
+            self.viewController?.imageView.layer.borderWidth = 0
+        }
+        
+    }
+    
+    //MARK: AlertMessage
+    func makeResultMessage() -> String {
+        statisticService?.store(correct: correctAnswersCount, total: questionsAmount)
+        
+        guard let statisticService = statisticService, let bestGame = statisticService.bestGame else {
+            assertionFailure("error")
+            return ""
+        }
+        let totalPlaysCountLine = "Колличество сыграных квизов: \(statisticService.gamesCount)"
+        let currentGameResult = "Ваш результат: \(correctAnswersCount)\\\(questionsAmount)"
+        let bestGameInfoLine = "Рекорд: \(bestGame.correct)"
+        let averageAccuracyLine = "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
+        let resultMessage = [totalPlaysCountLine, currentGameResult, bestGameInfoLine, averageAccuracyLine].joined(separator: "\n")
+        return resultMessage
+    }
+
+    //MARK: ButtonsControls
+    
+    func disabelButtons() {
+        viewController?.yesButton.isEnabled = false
+        viewController?.noButton.isEnabled = false
+    }
+    
+    func enableButtons() {
+        viewController?.yesButton.isEnabled = true
+        viewController?.noButton.isEnabled = true
     }
 
 

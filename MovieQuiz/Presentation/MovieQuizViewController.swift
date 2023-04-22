@@ -4,7 +4,6 @@ final class MovieQuizViewController: UIViewController{
     
     private var presenter: MovieQuizPresenter!
     private var alertPresenter: AlertPresenterProtocol?
-    private var statisticService: StatisticService?
     
     @IBOutlet weak var yesButton: UIButton!
     @IBOutlet weak var noButton: UIButton!
@@ -12,7 +11,7 @@ final class MovieQuizViewController: UIViewController{
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet private weak var questionLabel: UILabel!
     @IBOutlet private weak var indexLabel: UILabel!
-    @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet weak var imageView: UIImageView!
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -20,7 +19,6 @@ final class MovieQuizViewController: UIViewController{
         super.viewDidLoad()
         presenter = MovieQuizPresenter(viewController: self)
         
-        statisticService = StatisticServiceImplementation()
         alertPresenter = AlertPresenter(viewController: self)
         
     }
@@ -43,59 +41,23 @@ final class MovieQuizViewController: UIViewController{
         indexLabel.text = step.questionNumber
     }
     
+    func highlightImageBorder(isCorrectAnswer: Bool) {
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 8
+        imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+    }
     
     func showFinalResult() {
-        statisticService?.store(correct: presenter.correctAnswersCount, total: presenter.questionsAmount)
         
         let alertModel = AlertModel(
             title: "Этот раунд окончен!",
-            message: "\(makeResultMessage())",
+            message: "\(presenter.makeResultMessage())",
             buttonText: "Cыграть ещё раз",
             completion: { [weak self] in
                 self?.presenter.restartGame()
             }
         )
         alertPresenter?.show(alertModel: alertModel)
-    }
-    
-    func showAnswerResult(isCorrect: Bool) {
-        presenter.didAnswer(isCorrectAnswer: isCorrect)
-
-        imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 8
-        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.somethingIsLoading()
-            self.presenter.showNextQuestionOrResults()
-            self.enableButtons()
-            self.imageView.layer.borderWidth = 0
-        }
-        
-    }
-    
-    private func makeResultMessage() -> String {
-        guard let statisticService = statisticService, let bestGame = statisticService.bestGame else {
-            assertionFailure("error")
-            return ""
-        }
-        let totalPlaysCountLine = "Колличество сыграных квизов: \(statisticService.gamesCount)"
-        let currentGameResult = "Ваш результат: \(presenter.correctAnswersCount)\\\(presenter.questionsAmount)"
-        let bestGameInfoLine = "Рекорд: \(bestGame.correct)"
-        let averageAccuracyLine = "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
-        let resultMessage = [totalPlaysCountLine, currentGameResult, bestGameInfoLine, averageAccuracyLine].joined(separator: "\n")
-        return resultMessage
-    }
-    
-    // MARK: ButtonsControl
-    
-    func disabelButtons() {
-        yesButton.isEnabled = false
-        noButton.isEnabled = false
-    }
-    
-    func enableButtons() {
-        yesButton.isEnabled = true
-        noButton.isEnabled = true
     }
     
     // MARK: - Indicator
@@ -139,6 +101,8 @@ final class MovieQuizViewController: UIViewController{
         questionLabel.text = "Загрузка вопроса...\n"
         showLoadingIndicator()
     }
+    
+    
     
 }
 
