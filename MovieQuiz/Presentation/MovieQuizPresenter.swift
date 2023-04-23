@@ -12,14 +12,14 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
 
     var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
-    private weak var viewController: MovieQuizViewController?
+    private weak var viewController: MovieQuizViewControllerProtocol?
     private var statisticService: StatisticService?
     
     private var correctAnswersCount: Int = 0
     private let questionsAmount: Int = 10
     private var currentQuestionIndex: Int = 0
     
-    init(viewController: MovieQuizViewController) {
+    init(viewController: MovieQuizViewControllerProtocol) {
         self.viewController = viewController
         
         statisticService = StatisticServiceImplementation()
@@ -56,7 +56,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     // MARK: Actions
     
     func yesButtonTapped() {
-        self.disabelButtons()
+        self.viewController?.disableButtons()
         guard let currentQuestion = currentQuestion else {return}
         
         let givenAnswer = true
@@ -64,7 +64,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     }
     
     func noButtonTapped() {
-        self.disabelButtons()
+        self.viewController?.disableButtons()
         guard let currentQuestion = currentQuestion else {return}
         
         let givenAnswer = false
@@ -122,8 +122,8 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.viewController?.somethingIsLoading()
             self.proceedToNextQuestionOrResults()
-            self.enableButtons()
-            self.viewController?.imageView.layer.borderWidth = 0
+            self.viewController?.enableButtons()
+            self.viewController?.hideBorder()
         }
         
     }
@@ -143,19 +143,5 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         let resultMessage = [totalPlaysCountLine, currentGameResult, bestGameInfoLine, averageAccuracyLine].joined(separator: "\n")
         return resultMessage
     }
-
-    //MARK: ButtonsControls
-    
-    func disabelButtons() {
-        viewController?.yesButton.isEnabled = false
-        viewController?.noButton.isEnabled = false
-    }
-    
-    func enableButtons() {
-        viewController?.yesButton.isEnabled = true
-        viewController?.noButton.isEnabled = true
-    }
-
-
     
 }

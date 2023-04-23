@@ -1,6 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController{
+final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
     
     private var presenter: MovieQuizPresenter!
     private var alertPresenter: AlertPresenterProtocol?
@@ -42,9 +42,12 @@ final class MovieQuizViewController: UIViewController{
     }
     
     func highlightImageBorder(isCorrectAnswer: Bool) {
-        imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+    }
+    
+    func hideBorder() {
+        imageView.layer.borderWidth = 0
     }
     
     func showFinalResult() {
@@ -102,7 +105,17 @@ final class MovieQuizViewController: UIViewController{
         showLoadingIndicator()
     }
     
+    //MARK: ButtonsControls
     
+    func disableButtons() {
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
+    }
+    
+    func enableButtons() {
+        yesButton.isEnabled = true
+        noButton.isEnabled = true
+    }
     
 }
 

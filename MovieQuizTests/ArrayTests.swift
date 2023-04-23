@@ -28,6 +28,6 @@ class ArrayTests: XCTestCase {
         //WHEN
         let value = array[safe: 20]
         //THEN
-        XCTAssertNotNil(value)
+        XCTAssertNil(value)
     }
 }
