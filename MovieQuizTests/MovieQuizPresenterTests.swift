@@ -39,15 +39,11 @@ final class MovieQuizViewControllerMock: MovieQuizViewControllerProtocol {
         
     }
     
-    func somethingIsLoading() {
+    func loadingStarted() {
         
     }
     
-    func disableButtons() {
-        
-    }
-    
-    func enableButtons() {
+    func buttonsController(isEnable: Bool) {
         
     }
     
@@ -66,7 +62,7 @@ final class MovieQuizPresenterTests: XCTestCase {
         let question = QuizQuestion(image: emptyData, text: "Question Text", correctAnswer: true)
         let viewModel = sut.convert(model: question)
         
-         XCTAssertNotNil(viewModel.image)
+        XCTAssertNotNil(viewModel.image)
         XCTAssertEqual(viewModel.question, "Question Text")
         XCTAssertEqual(viewModel.questionNumber, "1/10")
     }

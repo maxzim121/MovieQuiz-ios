@@ -1,9 +1,3 @@
-//
-//  NetworkClient.swift
-//  MovieQuiz
-//
-//  Created by Maksim Zimens on 06.04.2023.
-//
 
 import Foundation
 protocol NetworkRouting {

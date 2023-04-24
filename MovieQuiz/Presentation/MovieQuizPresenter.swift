@@ -26,7 +26,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         questionFactory?.loadData()
-        viewController.somethingIsLoading()
+        viewController.loadingStarted()
     }
     
     //MARK: CurrentQuestionIndex
@@ -56,7 +56,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     // MARK: Actions
     
     func yesButtonTapped() {
-        self.viewController?.disableButtons()
+        self.viewController?.buttonsController(isEnable: false)
         guard let currentQuestion = currentQuestion else {return}
         
         let givenAnswer = true
@@ -64,7 +64,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     }
     
     func noButtonTapped() {
-        self.viewController?.disableButtons()
+        self.viewController?.buttonsController(isEnable: false)
         guard let currentQuestion = currentQuestion else {return}
         
         let givenAnswer = false
@@ -120,9 +120,9 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.viewController?.somethingIsLoading()
+            self.viewController?.loadingStarted()
             self.proceedToNextQuestionOrResults()
-            self.viewController?.enableButtons()
+            self.viewController?.buttonsController(isEnable: true)
             self.viewController?.hideBorder()
         }
         

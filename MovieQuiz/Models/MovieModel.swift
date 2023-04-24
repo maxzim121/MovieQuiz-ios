@@ -1,9 +1,3 @@
-//
-//  MovieModel.swift
-//  MovieQuiz
-//
-//  Created by Maksim Zimens on 28.03.2023.
-//
 
 import Foundation
 

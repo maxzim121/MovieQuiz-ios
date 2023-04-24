@@ -1,9 +1,3 @@
-//
-//  QuizQuestion.swift
-//  MovieQuiz
-//
-//  Created by Maksim Zimens on 21.03.2023.
-//
 
 import Foundation
 

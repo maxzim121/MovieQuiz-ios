@@ -1,9 +1,3 @@
-//
-//  BestGame.swift
-//  MovieQuiz
-//
-//  Created by Maksim Zimens on 01.04.2023.
-//
 
 import Foundation
 

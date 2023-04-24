@@ -1,9 +1,3 @@
-//
-//  MovieQuizControllerProtocol.swift
-//  MovieQuiz
-//
-//  Created by Maksim Zimens on 22.04.2023.
-//
 
 import Foundation
 
@@ -19,10 +13,9 @@ protocol MovieQuizViewControllerProtocol: AnyObject {
     func showNetworkError(message: String)
     func showImageLoadingError(message: String)
     
-    func somethingIsLoading()
+    func loadingStarted()
     
-    func disableButtons()
-    func enableButtons()
+    func buttonsController(isEnable: Bool)
     
     func hideBorder()
 }
