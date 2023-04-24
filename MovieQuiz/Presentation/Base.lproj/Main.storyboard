@@ -31,6 +31,7 @@
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="1/10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Zf-PV-T6u" userLabel="Index Label">
                                                 <rect key="frame" x="349.66666666666669" y="0.0" width="40.333333333333314" height="23.333333333333332"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="Index"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -40,6 +41,9 @@
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lj2-za-O5V">
                                         <rect key="frame" x="0.0" y="43.333333333333314" width="390" height="585"/>
                                         <color key="backgroundColor" name="white"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="Poster">
+                                            <bool key="isElement" value="YES"/>
+                                        </accessibility>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="lj2-za-O5V" secondAttribute="height" multiplier="2:3" id="yDd-1T-kZm"/>
                                         </constraints>
@@ -79,6 +83,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FvK-IC-Qqj" userLabel="No Button">
                                                 <rect key="frame" x="0.0" y="0.0" width="185" height="60"/>
                                                 <color key="backgroundColor" name="white"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="No"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="60" id="rhR-AS-XfQ"/>
                                                 </constraints>
@@ -108,6 +113,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jcw-Ga-XPf" userLabel="Yes Button">
                                                 <rect key="frame" x="205" y="0.0" width="185" height="60"/>
                                                 <color key="backgroundColor" name="white"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="Yes"/>
                                                 <color key="tintColor" name="white"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain">
@@ -166,7 +172,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-55.813953488372093" y="55.36480686695279"/>
+            <point key="canvasLocation" x="261" y="56"/>
         </scene>
     </scenes>
     <resources>

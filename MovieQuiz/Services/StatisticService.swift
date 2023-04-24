@@ -1,9 +1,3 @@
-//
-//  StatisticService.swift
-//  MovieQuiz
-//
-//  Created by Maksim Zimens on 29.03.2023.
-//
 
 import Foundation
 
